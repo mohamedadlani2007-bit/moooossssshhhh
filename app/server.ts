@@ -423,22 +423,13 @@ function getOrCreateSshHostKey(): string {
   }
 }
 
-const SSH_BANNER_TEXT = `<div style="text-align: center; font-family: Arial, sans-serif; line-height: 1.6; padding: 15px; border-radius: 10px; background-color: #f9f9f9; border: 2px dashed #00ced1;">
-  <h2 style="color: red; margin-bottom: 10px;">✦ Connected to Secure Server ✦</h2>
-
-  <p style="color: #00ced1;">🌍 <strong>Location:</strong> EUROPE</p>
-  <p style="color: #7fff00;">🛰️ <strong>VPS SERVER</strong></p>
-  <p style="color: #dda0dd;">🌙 <strong>Powered by Secure Admin</strong></p>
-  <p style="color: #1e90ff;">🔗 <strong>SECURE-CONFIG</strong></p>
-  <p style="color: #ff4500;">🚫 <strong>No Torrent Allowed</strong></p>
-  <p style="color: #ff0000;">❌ <strong>Rule Violation = Terminate</strong></p>
-
-  <hr style="border: none; border-top: 1px dashed #ccc; margin: 20px 0;">
-
-  <p style="color: #ffd700;">✨ <strong>Enjoy Internet</strong> ✨</p>
-  <p style="color: #32cd32;">🔋 <strong>Support by Secure Admin</strong></p>
+const SSH_BANNER_TEXT = `<div style="text-align: center; font-family: Arial, sans-serif; line-height: 1.8; padding: 15px; border-radius: 10px; background-color: #111827; border: 2px solid #00FFFF;">
+  <h2 style="color: #00FFFF; margin-bottom: 10px;">💠 Mohamed Global 💠</h2>
+  <p style="color: #FF00FF; margin: 6px 0;"><strong>محمد العالمية</strong></p>
+  <p style="color: #FFD700; margin: 6px 0;"><strong>⚡ Fast</strong></p>
+  <p style="color: #00FF00; margin: 6px 0;"><strong>🎮 Gaming</strong></p>
+  <p style="color: #00BFFF; margin: 6px 0;"><strong>🔐 Secure</strong></p>
 </div>`;
-
 function checkSshAuth(user: string, pass: string): boolean {
   const creds = getSshCredentials();
   return user === creds.username && pass === creds.password;

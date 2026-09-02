@@ -338,20 +338,12 @@ function getOrCreateSshHostKey() {
     return privateKey;
   }
 }
-var SSH_BANNER_TEXT = `<div style="text-align: center; font-family: Arial, sans-serif; line-height: 1.6; padding: 15px; border-radius: 10px; background-color: #f9f9f9; border: 2px dashed #00ced1;">
-  <h2 style="color: red; margin-bottom: 10px;">\u2726 Connected to Secure Server \u2726</h2>
-
-  <p style="color: #00ced1;">\u{1F30D} <strong>Location:</strong> EUROPE</p>
-  <p style="color: #7fff00;">\u{1F6F0}\uFE0F <strong>VPS SERVER</strong></p>
-  <p style="color: #dda0dd;">\u{1F319} <strong>Powered by Secure Admin</strong></p>
-  <p style="color: #1e90ff;">\u{1F517} <strong>SECURE-CONFIG</strong></p>
-  <p style="color: #ff4500;">\u{1F6AB} <strong>No Torrent Allowed</strong></p>
-  <p style="color: #ff0000;">\u274C <strong>Rule Violation = Terminate</strong></p>
-
-  <hr style="border: none; border-top: 1px dashed #ccc; margin: 20px 0;">
-
-  <p style="color: #ffd700;">\u2728 <strong>Enjoy Internet</strong> \u2728</p>
-  <p style="color: #32cd32;">\u{1F50B} <strong>Support by Secure Admin</strong></p>
+var SSH_BANNER_TEXT = `<div style="text-align: center; font-family: Arial, sans-serif; line-height: 1.8; padding: 15px; border-radius: 10px; background-color: #111827; border: 2px solid #00FFFF;">
+  <h2 style="color: #00FFFF; margin-bottom: 10px;">💠 Mohamed Global 💠</h2>
+  <p style="color: #FF00FF; margin: 6px 0;"><strong>محمد العالمية</strong></p>
+  <p style="color: #FFD700; margin: 6px 0;"><strong>⚡ Fast</strong></p>
+  <p style="color: #00FF00; margin: 6px 0;"><strong>🎮 Gaming</strong></p>
+  <p style="color: #00BFFF; margin: 6px 0;"><strong>🔐 Secure</strong></p>
 </div>`;
 function checkSshAuth(user, pass) {
   const creds = getSshCredentials();
@@ -521,14 +513,14 @@ function startSshServer() {
         const stream = accept2();
         if (!stream) return;
         try {
-          stream.write(SSH_BANNER_TEXT + "\r\n\r\nConnected as " + authUser + "\r\n\r\nsecure-ssh$ ");
+          stream.write(SSH_BANNER_TEXT + "\r\n\r\nConnected as " + authUser + "\r\n\r\nmohaalamia-ssh$ ");
         } catch {
         }
         stream.on("data", (d) => {
           const s = d.toString();
           if (s.includes("\r") || s.includes("\n")) {
             try {
-              stream.write("\r\nsecure-ssh$ ");
+              stream.write("\r\nmohaalamia-ssh$ ");
             } catch {
             }
           }
