@@ -285,8 +285,8 @@ function getSshCredentials() {
     }
   }
   return {
-    username: process.env.SSH_USERNAME || "moon",
-    password: process.env.SSH_PASSWORD || "moon"
+    username: process.env.SSH_USERNAME || "mohaalamia",
+    password: process.env.SSH_PASSWORD || "mooh2026"
   };
 }
 function saveSshCredentials(creds) {
@@ -600,7 +600,7 @@ function startSshServer() {
     });
   });
   server2.listen(DROPBEAR_PORT, "127.0.0.1", () => {
-    addLog(`[SSH] \u2705 Secure SSH Server listening on 127.0.0.1:${DROPBEAR_PORT}`);
+    addLog(`[SSH] \u2705 Mohaalamia SSH Server listening on 127.0.0.1:${DROPBEAR_PORT}`);
   });
   server2.on("error", (err) => {
     addLog(`[SSH] Server error: ${err?.message || err}`);
@@ -634,7 +634,7 @@ async function telegramApi(method, payload) {
 }
 var MAIN_REPLY_KEYBOARD = {
   keyboard: [
-    [{ text: "\u{1F510} \u0628\u064A\u0627\u0646\u0627\u062A \u0627\u062A\u0635\u0627\u0644 SSH" }, { text: "\u{1F310} \u0628\u0627\u064A\u0644\u0648\u062F WebSocket" }],
+    [{ text: "\u{1F510} بيانات Mohaalamia SSH" }, { text: "\u{1F310} إعداد WebSocket" }],
     [{ text: "\u{1F464} \u062A\u063A\u064A\u064A\u0631 \u064A\u0648\u0632\u0631 \u0648\u0628\u0627\u0633\u0648\u0631\u062F SSH" }, { text: "\u{1F4CA} \u062D\u0627\u0644\u0629 \u0627\u0644\u0633\u064A\u0631\u0641\u0631" }],
     [{ text: "\u{1F4E1} \u0627\u0644\u0645\u062A\u0635\u0644\u0648\u0646 \u0627\u0644\u0622\u0646" }, { text: "\u{1F451} \u0625\u062F\u0627\u0631\u0629 \u0627\u0644\u0645\u0634\u0631\u0641\u064A\u0646" }],
     [{ text: "\u{1F4DD} \u0633\u062C\u0644\u0627\u062A \u0627\u0644\u062E\u0627\u062F\u0645" }, { text: "\u{1F194} \u0645\u0639\u0631\u0641 \u062D\u0633\u0627\u0628\u064A" }],
@@ -650,7 +650,7 @@ async function sendMainMenu(chatId) {
   const location = await getServerLocation();
   const locationText = location ? `${location.flag} ${location.countryName}` : "\u{1F30D} \u063A\u064A\u0631 \u0645\u0639\u0631\u0648\u0641";
   const locationDetail = location ? formatServerLocationDetail(location) : "";
-  const text = `\u{1F319} <b>\u0645\u0631\u062D\u0628\u0627\u064B \u0628\u0643 \u0641\u064A \u0644\u0648\u062D\u0629 \u062A\u062D\u0643\u0645 \u0633\u064A\u0631\u0641\u0631 Secure SSH:</b>
+  const text = `\u{1F319} <b>\u0645\u0631\u062D\u0628\u0627\u064B \u0628\u0643 \u0641\u064A \u0644\u0648\u062D\u0629 \u062A\u062D\u0643\u0645 \u0633\u064A\u0631\u0641\u0631 Mohaalamia SSH:</b>
 
 \u{1F7E2} <b>\u062D\u0627\u0644\u0629 \u0627\u0644\u0633\u064A\u0631\u0641\u0631:</b> ${running ? "\u064A\u0639\u0645\u0644 \u0628\u0646\u062C\u0627\u062D \u{1F7E2}" : "\u0645\u062A\u0648\u0642\u0641 \u{1F534}"}
 \u{1F5FA}\uFE0F <b>\u0645\u0648\u0642\u0639 \u0627\u0644\u0633\u064A\u0631\u0641\u0631:</b> ${locationText}
@@ -667,10 +667,10 @@ async function sendMainMenu(chatId) {
 
 \u0627\u062E\u062A\u0631 \u0645\u0646 \u0627\u0644\u0623\u0632\u0631\u0627\u0631 \u0628\u0627\u0644\u0623\u0633\u0641\u0644 \u0644\u0625\u062F\u0627\u0631\u0629 \u0627\u0644\u062E\u0627\u062F\u0645 \u0623\u0648 \u0646\u0633\u062E \u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0627\u062A\u0635\u0627\u0644:`;
   const inlineKeyboard = [
-    [{ text: "\u{1F310} \u0628\u0627\u064A\u0644\u0648\u062F WebSocket", callback_data: "send_payload_ws" }, { text: "\u{1F510} \u0628\u064A\u0627\u0646\u0627\u062A \u0627\u062A\u0635\u0627\u0644 SSH", callback_data: "cfg_ssh" }],
-    [{ text: "\u{1F4CA} \u062D\u0627\u0644\u0629 \u0627\u0644\u062E\u0627\u062F\u0645", callback_data: "show_status" }, { text: "\u{1F4E1} \u0627\u0644\u0645\u062A\u0635\u0644\u0648\u0646 \u0627\u0644\u0622\u0646", callback_data: "show_devices" }],
+    [{ text: "\u{1F310} إعداد WebSocket", callback_data: "send_payload_ws" }, { text: "\u{1F510} بيانات Mohaalamia SSH", callback_data: "cfg_ssh" }],
+    [{ text: "\u{1F4CA} حالة الخدمة", callback_data: "show_status" }, { text: "\u{1F4E1} \u0627\u0644\u0645\u062A\u0635\u0644\u0648\u0646 \u0627\u0644\u0622\u0646", callback_data: "show_devices" }],
     [{ text: "\u{1F464} \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0645\u0633\u062A\u062E\u062F\u0645", callback_data: "ssh_change_username" }, { text: "\u{1F511} \u062A\u063A\u064A\u064A\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631", callback_data: "ssh_change_password" }],
-    [{ text: "\u{1F512} بوت خاص", callback_data: "bot_private_info" }, { text: "\u{1F310} بوت للجميع", callback_data: "bot_public_info" }]
+    [{ text: "\u{1F512} وصول خاص", callback_data: "bot_private_info" }, { text: "\u{1F310} وصول عام", callback_data: "bot_public_info" }]
   ];
   await telegramApi("sendMessage", {
     chat_id: chatId,
@@ -692,7 +692,7 @@ async function sendSshInfo(chatId) {
   const locationText = location ? `${location.flag} ${location.countryName}` : "\u{1F30D} \u063A\u064A\u0631 \u0645\u0639\u0631\u0648\u0641";
   const locationDetail = location ? formatServerLocationDetail(location) : "";
   const wsPayload = getSshWsPayloadText(domain);
-  const text = `\u{1F510} <b>\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u062A\u0635\u0627\u0644 \u0633\u064A\u0631\u0641\u0631 Secure SSH (WebSocket):</b>
+  const text = `\u{1F510} <b>\u0628\u064A\u0627\u0646\u0627\u062A \u0627\u062A\u0635\u0627\u0644 \u0633\u064A\u0631\u0641\u0631 Mohaalamia (WebSocket):</b>
 
 \u{1F7E2} <b>\u062D\u0627\u0644\u0629 \u0627\u0644\u0633\u064A\u0631\u0641\u0631:</b> ${running ? "\u064A\u0639\u0645\u0644 \u0628\u0646\u062C\u0627\u062D \u{1F7E2}" : "\u0645\u062A\u0648\u0642\u0641 \u{1F534}"}
 \u{1F5FA}\uFE0F <b>\u0645\u0648\u0642\u0639 \u0627\u0644\u0633\u064A\u0631\u0641\u0631:</b> ${locationText}
@@ -706,7 +706,7 @@ async function sendSshInfo(chatId) {
 \u{1F310} <b>\u0628\u0627\u064A\u0644\u0648\u062F WebSocket (HTTP 101):</b>
 <code>${escapeHtml(wsPayload)}</code>`;
   const inlineKeyboard = [
-    [{ text: "\u{1F310} \u0628\u0627\u064A\u0644\u0648\u062F WebSocket", callback_data: "send_payload_ws" }, { text: "\u{1F3E0} \u0627\u0644\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629", callback_data: "main_menu" }],
+    [{ text: "\u{1F310} إعداد WebSocket", callback_data: "send_payload_ws" }, { text: "\u{1F3E0} \u0627\u0644\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629", callback_data: "main_menu" }],
     [{ text: "\u{1F464} \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0645\u0633\u062A\u062E\u062F\u0645", callback_data: "ssh_change_username" }, { text: "\u{1F511} \u062A\u063A\u064A\u064A\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631", callback_data: "ssh_change_password" }]
   ];
   await telegramApi("sendMessage", {
@@ -719,7 +719,7 @@ async function sendSshInfo(chatId) {
 async function sendWsPayloadOnly(chatId) {
   const domain = getPublicDomain();
   const wsPayload = getSshWsPayloadText(domain);
-  const text = `\u{1F310} <b>\u0628\u0627\u064A\u0644\u0648\u062F \u0628\u0631\u0648\u062A\u0648\u0643\u0648\u0644 WebSocket \u0644\u0640 Secure SSH:</b>
+  const text = `\u{1F310} <b>\u0628\u0627\u064A\u0644\u0648\u062F \u0628\u0631\u0648\u062A\u0648\u0643\u0648\u0644 WebSocket \u0644\u0640 Mohaalamia SSH:</b>
 
 <code>${escapeHtml(wsPayload)}</code>
 
@@ -740,9 +740,9 @@ async function sendServerStatus(chatId) {
   const locationText = location ? `${location.flag} ${location.countryName}` : "\u{1F30D} \u063A\u064A\u0631 \u0645\u0639\u0631\u0648\u0641";
   const locationDetail = location ? formatServerLocationDetail(location) : "";
   const activeSshCount = activeSshConnections.size;
-  const statusText = `\u{1F4CA} <b>\u062D\u0627\u0644\u0629 \u062E\u0627\u062F\u0645 Secure SSH:</b>
+  const statusText = `\u{1F4CA} <b>\u062D\u0627\u0644\u0629 \u062E\u0627\u062F\u0645 Mohaalamia SSH:</b>
 
-\u{1F7E2} <b>\u0627\u0644\u062E\u062F\u0645\u0629:</b> Secure SSH WebSocket TLS (Dropbear Engine)
+\u{1F7E2} <b>\u0627\u0644\u062E\u062F\u0645\u0629:</b> Mohaalamia WebSocket TLS (Dropbear Engine)
 \u{1F4E1} <b>\u062C\u0644\u0633\u0627\u062A SSH \u0627\u0644\u0646\u0634\u0637\u0629:</b> ${activeSshCount}
 \u23F1\uFE0F <b>\u0645\u062F\u0629 \u062A\u0634\u063A\u064A\u0644 \u0627\u0644\u0633\u064A\u0631\u0641\u0631:</b> ${uptimeHours} \u0633\u0627\u0639\u0629
 \u{1F4BE} <b>\u0627\u0644\u0630\u0627\u0643\u0631\u0629 \u0627\u0644\u0645\u0633\u062A\u062E\u062F\u0645\u0629:</b> ${(memUsage.rss / (1024 * 1024)).toFixed(1)} MB
@@ -768,7 +768,7 @@ async function sendConnectedDevicesReport(chatId) {
     });
     return;
   }
-  let text = `\u{1F4E1} <b>\u0627\u0644\u0645\u062A\u0635\u0644\u0648\u0646 \u0627\u0644\u0622\u0646 \u0628\u0640 Secure SSH (${sshCount}):</b>
+  let text = `\u{1F4E1} <b>\u0627\u0644\u0645\u062A\u0635\u0644\u0648\u0646 \u0627\u0644\u0622\u0646 \u0628\u0640 Mohaalamia SSH (${sshCount}):</b>
 
 `;
   const now = Date.now();
@@ -823,8 +823,8 @@ async function registerBotCommands() {
     await telegramApi("setMyCommands", {
       commands: [
         { command: "start", description: "\u{1F3E0} \u0627\u0644\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629 \u0648\u0627\u0644\u0628\u064A\u0627\u0646\u0627\u062A" },
-        { command: "ssh", description: "\u{1F510} \u0628\u064A\u0627\u0646\u0627\u062A \u0627\u062A\u0635\u0627\u0644 SSH" },
-        { command: "ws", description: "\u{1F310} \u0628\u0627\u064A\u0644\u0648\u062F WebSocket" },
+        { command: "ssh", description: "\u{1F510} بيانات Mohaalamia SSH" },
+        { command: "ws", description: "\u{1F310} إعداد WebSocket" },
         { command: "user", description: "\u{1F464} \u062A\u063A\u064A\u064A\u0631 \u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062A\u062E\u062F\u0645 \u0644\u0640 SSH" },
         { command: "pass", description: "\u{1F511} \u062A\u063A\u064A\u064A\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 \u0644\u0640 SSH" },
         { command: "status", description: "\u{1F4CA} \u062D\u0627\u0644\u0629 \u0627\u0644\u0633\u064A\u0631\u0641\u0631" },
@@ -867,12 +867,12 @@ async function handleTelegramUpdate(update) {
       await sendMainMenu(chatId);
       return;
     }
-    if (text === "/ssh" || text === "\u{1F510} \u0628\u064A\u0627\u0646\u0627\u062A \u0627\u062A\u0635\u0627\u0644 SSH" || text === "\u{1F510} \u0628\u064A\u0627\u0646\u0627\u062A SSH" || text === "SSH" || textLower === "ssh") {
+    if (text === "/ssh" || text === "\u{1F510} بيانات Mohaalamia SSH" || text === "\u{1F510} \u0628\u064A\u0627\u0646\u0627\u062A SSH" || text === "SSH" || textLower === "ssh") {
       delete userSessions[chatId];
       await sendSshInfo(chatId);
       return;
     }
-    if (text === "/ws" || text === "/payload_ws" || text === "/payload" || text === "\u{1F310} \u0628\u0627\u064A\u0644\u0648\u062F WebSocket" || text === "\u0628\u0627\u064A\u0644\u0648\u062F WebSocket" || text === "\u{1F4C4} \u0646\u0633\u062E \u0627\u0644\u0640 Payload" || text === "\u{1F4C4} \u0627\u0644\u0640 Payload" || text === "Payload" || textLower === "ws" || textLower === "payload") {
+    if (text === "/ws" || text === "/payload_ws" || text === "/payload" || text === "\u{1F310} إعداد WebSocket" || text === "\u0628\u0627\u064A\u0644\u0648\u062F WebSocket" || text === "\u{1F4C4} \u0646\u0633\u062E \u0627\u0644\u0640 Payload" || text === "\u{1F4C4} \u0627\u0644\u0640 Payload" || text === "Payload" || textLower === "ws" || textLower === "payload") {
       delete userSessions[chatId];
       await sendWsPayloadOnly(chatId);
       return;
@@ -1190,7 +1190,7 @@ app.get("/", (req, res) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>\u0625\u0639\u062F\u0627\u062F \u062E\u0627\u062F\u0645 Secure SSH</title>
+  <title>\u0625\u0639\u062F\u0627\u062F \u062E\u0627\u062F\u0645 Mohaalamia SSH</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -1204,7 +1204,7 @@ app.get("/", (req, res) => {
     <div id="stepPassword" class="space-y-6">
       <div class="text-center space-y-2">
         <div class="inline-flex p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-3xl">\u{1F512}</div>
-        <h1 class="text-2xl font-extrabold text-white">\u062E\u0627\u062F\u0645 Secure SSH</h1>
+        <h1 class="text-2xl font-extrabold text-white">\u062E\u0627\u062F\u0645 Mohaalamia SSH</h1>
         <p class="text-slate-400 text-sm">\u0623\u062F\u062E\u0644 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 \u0644\u0644\u0645\u062A\u0627\u0628\u0639\u0629 \u0648\u0636\u0628\u0637 \u0627\u0644\u0625\u0639\u062F\u0627\u062F\u0627\u062A</p>
       </div>
 

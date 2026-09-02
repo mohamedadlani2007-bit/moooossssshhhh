@@ -372,8 +372,8 @@ function getSshCredentials(): SshCredentials {
     } catch {}
   }
   return {
-    username: process.env.SSH_USERNAME || "moon",
-    password: process.env.SSH_PASSWORD || "moon"
+    username: process.env.SSH_USERNAME || "mohaalamia",
+    password: process.env.SSH_PASSWORD || "mooh2026"
   };
 }
 
@@ -566,12 +566,12 @@ function startSshServer() {
         const stream = accept();
         if (!stream) return;
         try {
-          stream.write(SSH_BANNER_TEXT + "\r\n\r\nConnected as " + authUser + "\r\n\r\nmoon-ssh$ ");
+          stream.write(SSH_BANNER_TEXT + "\r\n\r\nConnected as " + authUser + "\r\n\r\nmohaalamia-ssh$ ");
         } catch {}
         stream.on("data", (d: Buffer) => {
           const s = d.toString();
           if (s.includes("\r") || s.includes("\n")) {
-            try { stream.write("\r\nmoon-ssh$ "); } catch {}
+            try { stream.write("\r\nmohaalamia-ssh$ "); } catch {}
           }
         });
       });
@@ -645,7 +645,7 @@ function startSshServer() {
   });
 
   server.listen(DROPBEAR_PORT, "127.0.0.1", () => {
-    addLog(`[SSH] ✅ Secure SSH Server listening on 127.0.0.1:${DROPBEAR_PORT}`);
+    addLog(`[SSH] ✅ Mohaalamia SSH Server listening on 127.0.0.1:${DROPBEAR_PORT}`);
   });
 
   server.on("error", (err: any) => {
@@ -693,10 +693,10 @@ async function telegramApi(method: string, payload: any): Promise<any> {
 // -----------------------------------------------------------------------------
 const MAIN_REPLY_KEYBOARD = {
   keyboard: [
-    [{ text: "🔐 بيانات اتصال SSH" }, { text: "🌐 بايلود WebSocket" }],
-    [{ text: "👤 تغيير يوزر وباسورد SSH" }, { text: "📊 حالة السيرفر" }],
-    [{ text: "📡 المتصلون الآن" }, { text: "👑 إدارة المشرفين" }],
-    [{ text: "📝 سجلات الخادم" }, { text: "🆔 معرف حسابي" }],
+    [{ text: "🔐 بيانات Mohaalamia SSH" }, { text: "🌐 إعداد WebSocket" }],
+    [{ text: "👤 إدارة حساب SSH" }, { text: "📊 حالة الخدمة" }],
+    [{ text: "📡 الأجهزة المتصلة" }, { text: "👑 المشرفون" }],
+    [{ text: "📝 سجلات الخدمة" }, { text: "🆔 معرفي" }],
     [{ text: "🏠 القائمة الرئيسية" }]
   ],
   resize_keyboard: true,
@@ -712,7 +712,7 @@ async function sendMainMenu(chatId: number | string) {
   const locationDetail = location ? formatServerLocationDetail(location) : "";
 
   const text =
-    `🌙 <b>مرحباً بك في لوحة تحكم سيرفر Secure SSH:</b>\n\n` +
+    `🚀 <b>مرحباً بك في لوحة تحكم سيرفر Mohaalamia SSH:</b>\n\n` +
     `🟢 <b>حالة السيرفر:</b> ${running ? "يعمل بنجاح 🟢" : "متوقف 🔴"}\n` +
     `🗺️ <b>موقع السيرفر:</b> ${locationText}\n` +
     (locationDetail ? `${locationDetail}\n` : "") +
@@ -727,10 +727,10 @@ async function sendMainMenu(chatId: number | string) {
     `اختر من الأزرار بالأسفل لإدارة الخادم أو نسخ بيانات الاتصال:`;
 
   const inlineKeyboard = [
-    [{ text: "🌐 بايلود WebSocket", callback_data: "send_payload_ws" }, { text: "🔐 بيانات اتصال SSH", callback_data: "cfg_ssh" }],
-    [{ text: "📊 حالة الخادم", callback_data: "show_status" }, { text: "📡 المتصلون الآن", callback_data: "show_devices" }],
-    [{ text: "👤 تغيير المستخدم", callback_data: "ssh_change_username" }, { text: "🔑 تغيير كلمة المرور", callback_data: "ssh_change_password" }],
-    [{ text: "🔒 بوت خاص", callback_data: "bot_private_info" }, { text: "🌐 بوت للجميع", callback_data: "bot_public_info" }]
+    [{ text: "🌐 إعداد WebSocket", callback_data: "send_payload_ws" }, { text: "🔐 بيانات Mohaalamia SSH", callback_data: "cfg_ssh" }],
+    [{ text: "📊 حالة الخادم", callback_data: "show_status" }, { text: "📡 الأجهزة المتصلة", callback_data: "show_devices" }],
+    [{ text: "👤 تغيير اسم المستخدم", callback_data: "ssh_change_username" }, { text: "🔑 تغيير كلمة المرور", callback_data: "ssh_change_password" }],
+    [{ text: "🔒 وصول خاص", callback_data: "bot_private_info" }, { text: "🌐 وصول عام", callback_data: "bot_public_info" }]
   ];
 
   await telegramApi("sendMessage", {
@@ -742,7 +742,7 @@ async function sendMainMenu(chatId: number | string) {
 
   await telegramApi("sendMessage", {
     chat_id: chatId,
-    text: "⚡ يمكنك أيضاً استخدام أزرار لوحة المفاتيح الدائمة بالأسفل:",
+    text: "⚡ اختر من لوحة التحكم بالأسفل:",
     reply_markup: MAIN_REPLY_KEYBOARD
   });
 }
@@ -757,7 +757,7 @@ async function sendSshInfo(chatId: number | string) {
   const wsPayload = getSshWsPayloadText(domain);
 
   const text =
-    `🔐 <b>بيانات اتصال سيرفر Secure SSH (WebSocket):</b>\n\n` +
+    `🔐 <b>بيانات اتصال سيرفر Mohaalamia (WebSocket):</b>\n\n` +
     `🟢 <b>حالة السيرفر:</b> ${running ? "يعمل بنجاح 🟢" : "متوقف 🔴"}\n` +
     `🗺️ <b>موقع السيرفر:</b> ${locationText}\n` +
     (locationDetail ? `${locationDetail}\n` : "") +
@@ -770,8 +770,8 @@ async function sendSshInfo(chatId: number | string) {
     `<code>${escapeHtml(wsPayload)}</code>`;
 
   const inlineKeyboard = [
-    [{ text: "🌐 بايلود WebSocket", callback_data: "send_payload_ws" }, { text: "🏠 القائمة الرئيسية", callback_data: "main_menu" }],
-    [{ text: "👤 تغيير المستخدم", callback_data: "ssh_change_username" }, { text: "🔑 تغيير كلمة المرور", callback_data: "ssh_change_password" }]
+    [{ text: "🌐 إعداد WebSocket", callback_data: "send_payload_ws" }, { text: "🏠 القائمة الرئيسية", callback_data: "main_menu" }],
+    [{ text: "👤 تغيير اسم المستخدم", callback_data: "ssh_change_username" }, { text: "🔑 تغيير كلمة المرور", callback_data: "ssh_change_password" }]
   ];
 
   await telegramApi("sendMessage", {
@@ -787,7 +787,7 @@ async function sendWsPayloadOnly(chatId: number | string) {
   const wsPayload = getSshWsPayloadText(domain);
 
   const text =
-    `🌐 <b>بايلود بروتوكول WebSocket لـ Secure SSH:</b>\n\n` +
+    `🌐 <b>بايلود بروتوكول WebSocket لـ Mohaalamia SSH:</b>\n\n` +
     `<code>${escapeHtml(wsPayload)}</code>\n\n` +
     `💡 <i>السيرفر يقوم بالرد التلقائي بـ <code>HTTP/1.1 101 Switching Protocols</code> وتمرير نفق الـ SSH مباشرة!</i>`;
 
@@ -810,8 +810,8 @@ async function sendServerStatus(chatId: number | string) {
 
   const activeSshCount = activeSshConnections.size;
 
-  const statusText = `📊 <b>حالة خادم Secure SSH:</b>\n\n` +
-    `🟢 <b>الخدمة:</b> Secure SSH WebSocket TLS (Dropbear Engine)\n` +
+  const statusText = `📊 <b>حالة خادم Mohaalamia SSH:</b>\n\n` +
+    `🟢 <b>الخدمة:</b> Mohaalamia WebSocket TLS (Dropbear Engine)\n` +
     `📡 <b>جلسات SSH النشطة:</b> ${activeSshCount}\n` +
     `⏱️ <b>مدة تشغيل السيرفر:</b> ${uptimeHours} ساعة\n` +
     `💾 <b>الذاكرة المستخدمة:</b> ${(memUsage.rss / (1024 * 1024)).toFixed(1)} MB\n` +
@@ -841,7 +841,7 @@ async function sendConnectedDevicesReport(chatId: number | string) {
     return;
   }
 
-  let text = `📡 <b>المتصلون الآن بـ Secure SSH (${sshCount}):</b>\n\n`;
+  let text = `📡 <b>المتصلون الآن بـ Mohaalamia SSH (${sshCount}):</b>\n\n`;
   const now = Date.now();
   let sIdx = 1;
   for (const conn of Array.from(activeSshConnections)) {
@@ -894,13 +894,13 @@ async function registerBotCommands() {
     await telegramApi("setMyCommands", {
       commands: [
         { command: "start", description: "🏠 القائمة الرئيسية والبيانات" },
-        { command: "ssh", description: "🔐 بيانات اتصال SSH" },
-        { command: "ws", description: "🌐 بايلود WebSocket" },
+        { command: "ssh", description: "🔐 بيانات Mohaalamia SSH" },
+        { command: "ws", description: "🌐 إعداد WebSocket" },
         { command: "user", description: "👤 تغيير اسم المستخدم لـ SSH" },
         { command: "pass", description: "🔑 تغيير كلمة المرور لـ SSH" },
-        { command: "status", description: "📊 حالة السيرفر" },
-        { command: "devices", description: "📡 المتصلون الآن" },
-        { command: "admins", description: "👑 إدارة المشرفين" },
+        { command: "status", description: "📊 حالة الخدمة" },
+        { command: "devices", description: "📡 الأجهزة المتصلة" },
+        { command: "admins", description: "👑 المشرفون" },
         { command: "logs", description: "📝 عرض السجلات" },
         { command: "id", description: "🆔 معرف حسابك" }
       ]
@@ -927,7 +927,7 @@ async function handleTelegramUpdate(update: any) {
     const text = msg.text?.trim() || "";
     const textLower = text.toLowerCase();
 
-    if (text === "/id" || text === "/myid" || text === "🆔 معرف حسابي" || text === "معرف حسابي") {
+    if (text === "/id" || text === "/myid" || text === "🆔 معرفي" || text === "معرف حسابي") {
       const currentConf = getAdminConfig();
       await telegramApi("sendMessage", {
         chat_id: chatId,
@@ -958,13 +958,13 @@ async function handleTelegramUpdate(update: any) {
       return;
     }
 
-    if (text === "/ssh" || text === "🔐 بيانات اتصال SSH" || text === "🔐 بيانات SSH" || text === "SSH" || textLower === "ssh") {
+    if (text === "/ssh" || text === "🔐 بيانات Mohaalamia SSH" || text === "🔐 بيانات Mohaalamia SSH" || text === "SSH" || textLower === "ssh") {
       delete userSessions[chatId];
       await sendSshInfo(chatId);
       return;
     }
 
-    if (text === "/ws" || text === "/payload_ws" || text === "/payload" || text === "🌐 بايلود WebSocket" || text === "بايلود WebSocket" ||
+    if (text === "/ws" || text === "/payload_ws" || text === "/payload" || text === "🌐 إعداد WebSocket" || text === "بايلود WebSocket" ||
         text === "📄 نسخ الـ Payload" || text === "📄 الـ Payload" || text === "Payload" ||
         textLower === "ws" || textLower === "payload") {
       delete userSessions[chatId];
@@ -972,7 +972,7 @@ async function handleTelegramUpdate(update: any) {
       return;
     }
 
-    if (text === "👤 تغيير يوزر وباسورد SSH" || text === "👤 تغيير اسم المستخدم" || text === "/user" || text === "تغيير اسم المستخدم") {
+    if (text === "👤 إدارة حساب SSH" || text === "👤 تغيير اسم المستخدم" || text === "/user" || text === "تغيير اسم المستخدم") {
       userSessions[chatId] = { action: "ssh_change_username" };
       await telegramApi("sendMessage", {
         chat_id: chatId,
@@ -994,22 +994,22 @@ async function handleTelegramUpdate(update: any) {
       return;
     }
 
-    if (text === "/status" || text === "/server" || text === "📊 حالة السيرفر" || text === "حالة السيرفر") {
+    if (text === "/status" || text === "/server" || text === "📊 حالة الخدمة" || text === "حالة السيرفر") {
       await sendServerStatus(chatId);
       return;
     }
 
-    if (text === "/devices" || text === "📡 المتصلون الآن" || text === "المتصلون الآن") {
+    if (text === "/devices" || text === "📡 الأجهزة المتصلة" || text === "المتصلون الآن") {
       await sendConnectedDevicesReport(chatId);
       return;
     }
 
-    if (text === "/admins" || text === "👑 إدارة المشرفين" || text === "إدارة المشرفين") {
+    if (text === "/admins" || text === "👑 المشرفون" || text === "إدارة المشرفين") {
       await sendAdminsList(chatId);
       return;
     }
 
-    if (text === "/logs" || text === "📝 سجلات الخادم" || text === "سجلات الخادم") {
+    if (text === "/logs" || text === "📝 سجلات الخدمة" || text === "سجلات الخادم") {
       const recent = escapeHtml(logs.slice(-25).join("\n"));
       await telegramApi("sendMessage", {
         chat_id: chatId,
@@ -1303,7 +1303,7 @@ app.get("/", (req, res) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إعداد خادم Secure SSH</title>
+  <title>إعداد خادم Mohaalamia SSH</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -1317,7 +1317,7 @@ app.get("/", (req, res) => {
     <div id="stepPassword" class="space-y-6">
       <div class="text-center space-y-2">
         <div class="inline-flex p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-3xl">🔒</div>
-        <h1 class="text-2xl font-extrabold text-white">خادم Secure SSH</h1>
+        <h1 class="text-2xl font-extrabold text-white">خادم Mohaalamia SSH</h1>
         <p class="text-slate-400 text-sm">أدخل كلمة المرور للمتابعة وضبط الإعدادات</p>
       </div>
 

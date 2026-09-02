@@ -1,8 +1,8 @@
 # رفع الصورة المعدّلة إلى Docker Hub
 
-هذه الحزمة مبنية على الصورة الأصلية `docker.io/moon11000/a-feed21-v3-ssh:v1`، وتستبدل ملفات التطبيق المعدّلة فقط. النسخة المقترحة للنشر هي:
+هذه الحزمة مبنية على الصورة الأساسية الحالية، وتستبدل ملفات التطبيق المعدّلة فقط. النسخة المقترحة للنشر هي:
 
-`docker.io/moon11000/a-feed21-v3-ssh:v2`
+`docker.io/knhfdsjj/mohameddiv:v1`
 
 ## 1. فك الحزمة والدخول إلى المجلد
 
@@ -22,13 +22,13 @@ echo 'ضع_التوكن_محليًا_هنا' | docker login -u knhfdsjj --passwo
 ## 3. بناء الصورة
 
 ```bash
-docker build --pull -t docker.io/moon11000/a-feed21-v3-ssh:v2 .
+docker build --pull -t docker.io/knhfdsjj/mohameddiv:v1 .
 ```
 
 ## 4. رفع الصورة
 
 ```bash
-docker push docker.io/moon11000/a-feed21-v3-ssh:v2
+docker push docker.io/knhfdsjj/mohameddiv:v1
 ```
 
 ## 5. التشغيل المحلي الاختياري
@@ -39,9 +39,9 @@ docker run --rm -p 8080:8080 \
   -e MURAD_SETUP_PASSWORD='غيّرها_إلى_قيمة_قوية' \
   -e SSH_USERNAME='اسم_مستخدم_قوي' \
   -e SSH_PASSWORD='كلمة_مرور_قوية' \
-  docker.io/moon11000/a-feed21-v3-ssh:v2
+  docker.io/knhfdsjj/mohameddiv:v1
 ```
 
 المسار المعدّل هو `/_mohalamia`. الصفحة الرئيسية بعد إعداد البوت تعرض رسالة **تم الاتصال بنجاح** فقط. احتفظ بـ `MURAD_SETUP_PASSWORD` وبيانات SSH سرية، ولا تستعمل القيم الافتراضية في الإنتاج.
 
-إذا كان المستودع خاصًا أو لا تملك صلاحية الكتابة عليه، استخدم اسم مستودع تملكه بدل `moon11000/a-feed21-v3-ssh` في أمرَي البناء والرفع.
+إذا كان المستودع خاصًا أو لا تملك صلاحية الكتابة عليه، استخدم اسم مستودع تملكه بدل مستودع Docker تملكه في أمرَي البناء والرفع.
