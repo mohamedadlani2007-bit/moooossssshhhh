@@ -392,6 +392,22 @@ function saveSshCredentials(creds: SshCredentials) {
   }
 }
 
+
+function generateRandomSshCredentials(): SshCredentials {
+  const suffix = crypto.randomBytes(4).toString("hex");
+  const password = crypto.randomBytes(9).toString("base64url").slice(0, 12);
+  return { username: `mg_${suffix}`, password };
+}
+async function createPrivateSsh(chatId: number | string) {
+  const creds = generateRandomSshCredentials();
+  saveSshCredentials(creds);
+  const domain = getPublicDomain();
+  await telegramApi("sendMessage", {
+    chat_id: chatId,
+    text: `💠 <b>محمد العالمية</b>\n\n✅ <b>تم إنشاء حساب SSH عشوائي</b>\n\n🌐 <b>Host:</b> <code>${escapeHtml(domain)}</code>\n🔌 <b>Port:</b> <code>443</code>\n🧭 <b>Path:</b> <code>${SSH_WS_PATH}</code>\n👤 <b>Username:</b> <code>${escapeHtml(creds.username)}</code>\n🔑 <b>Password:</b> <code>${escapeHtml(creds.password)}</code>\n\n⚠️ هذا الحساب يستبدل بيانات الدخول السابقة لأن الخادم الحالي يدعم حساب SSH نشطًا واحدًا فقط.`,
+    parse_mode: "HTML"
+  });
+}
 function getOrCreateSshHostKey(): string {
   const keyPath = path.join(DATA_DIR, "ssh_host_rsa_key.pem");
   if (fs.existsSync(keyPath)) {
@@ -683,13 +699,7 @@ async function telegramApi(method: string, payload: any): Promise<any> {
 // Keyboards for Telegram Bot
 // -----------------------------------------------------------------------------
 const MAIN_REPLY_KEYBOARD = {
-  keyboard: [
-    [{ text: "🔐 بيانات Mohaalamia SSH" }, { text: "🌐 إعداد WebSocket" }],
-    [{ text: "👤 إدارة حساب SSH" }, { text: "📊 حالة الخدمة" }],
-    [{ text: "📡 الأجهزة المتصلة" }, { text: "👑 المشرفون" }],
-    [{ text: "📝 سجلات الخدمة" }, { text: "🆔 معرفي" }],
-    [{ text: "🏠 القائمة الرئيسية" }]
-  ],
+  keyboard: [[{ text: "➕ إنشاء SSH" }]],
   resize_keyboard: true,
   is_persistent: true
 };
@@ -718,10 +728,7 @@ async function sendMainMenu(chatId: number | string) {
     `اختر من الأزرار بالأسفل لإدارة الخادم أو نسخ بيانات الاتصال:`;
 
   const inlineKeyboard = [
-    [{ text: "🌐 إعداد WebSocket", callback_data: "send_payload_ws" }, { text: "🔐 بيانات Mohaalamia SSH", callback_data: "cfg_ssh" }],
-    [{ text: "📊 حالة الخادم", callback_data: "show_status" }, { text: "📡 الأجهزة المتصلة", callback_data: "show_devices" }],
-    [{ text: "👤 تغيير اسم المستخدم", callback_data: "ssh_change_username" }, { text: "🔑 تغيير كلمة المرور", callback_data: "ssh_change_password" }],
-    [{ text: "🔒 وصول خاص", callback_data: "bot_private_info" }, { text: "🌐 وصول عام", callback_data: "bot_public_info" }]
+    [{ text: "➕ إنشاء SSH", callback_data: "create_private_ssh" }]
   ];
 
   await telegramApi("sendMessage", {
@@ -761,8 +768,7 @@ async function sendSshInfo(chatId: number | string) {
     `<code>${escapeHtml(wsPayload)}</code>`;
 
   const inlineKeyboard = [
-    [{ text: "🌐 إعداد WebSocket", callback_data: "send_payload_ws" }, { text: "🏠 القائمة الرئيسية", callback_data: "main_menu" }],
-    [{ text: "👤 تغيير اسم المستخدم", callback_data: "ssh_change_username" }, { text: "🔑 تغيير كلمة المرور", callback_data: "ssh_change_password" }]
+    [{ text: "➕ إنشاء SSH", callback_data: "create_private_ssh" }]
   ];
 
   await telegramApi("sendMessage", {
@@ -865,36 +871,19 @@ async function sendAdminsList(chatId: number | string) {
     });
   }
 
-  const inlineButtons: any[] = [];
-  if (secondaries.length > 0) {
-    secondaries.forEach(sec => {
-      inlineButtons.push([{ text: `❌ حذف الثانوي: ${sec.name}`, callback_data: `del_sec_admin_${sec.id}` }]);
-    });
-  }
 
   await telegramApi("sendMessage", {
     chat_id: chatId,
     text,
     parse_mode: "HTML",
-    reply_markup: inlineButtons.length > 0 ? { inline_keyboard: inlineButtons } : MAIN_REPLY_KEYBOARD
+    reply_markup: MAIN_REPLY_KEYBOARD
   });
 }
 
 async function registerBotCommands() {
   try {
     await telegramApi("setMyCommands", {
-      commands: [
-        { command: "start", description: "🏠 القائمة الرئيسية والبيانات" },
-        { command: "ssh", description: "🔐 بيانات Mohaalamia SSH" },
-        { command: "ws", description: "🌐 إعداد WebSocket" },
-        { command: "user", description: "👤 تغيير اسم المستخدم لـ SSH" },
-        { command: "pass", description: "🔑 تغيير كلمة المرور لـ SSH" },
-        { command: "status", description: "📊 حالة الخدمة" },
-        { command: "devices", description: "📡 الأجهزة المتصلة" },
-        { command: "admins", description: "👑 المشرفون" },
-        { command: "logs", description: "📝 عرض السجلات" },
-        { command: "id", description: "🆔 معرف حسابك" }
-      ]
+      commands: []
     });
   } catch (err: any) {
     addLog(`Failed to register bot commands: ${err?.message || err}`);
@@ -949,6 +938,10 @@ async function handleTelegramUpdate(update: any) {
       return;
     }
 
+    if (text === "➕ إنشاء SSH") {
+      await createPrivateSsh(chatId);
+      return;
+    }
     if (text === "/ssh" || text === "🔐 بيانات Mohaalamia SSH" || text === "🔐 بيانات Mohaalamia SSH" || text === "SSH" || textLower === "ssh") {
       delete userSessions[chatId];
       await sendSshInfo(chatId);
@@ -1064,14 +1057,15 @@ async function handleTelegramUpdate(update: any) {
 
     await telegramApi("answerCallbackQuery", { callback_query_id: cb.id });
 
-    // Same authorization check as the message handler -- inline buttons
-    // (e.g. "change SSH password") must never be reachable by non-admins.
-    if (!isAuthorizedAdmin(userId) && !isAuthorizedAdmin(chatId)) {
+    const isAdmin = isAuthorizedAdmin(userId) || isAuthorizedAdmin(chatId);
+    if (!isAdmin) {
       addLog(`[Access Denied] Ignored callback_query from unauthorized Chat ID: ${chatId}, User ID: ${userId}`);
       return;
     }
 
-    if (data === "cfg_ssh") {
+    if (data === "create_private_ssh") {
+      await createPrivateSsh(chatId);
+    } else if (data === "cfg_ssh") {
       await sendSshInfo(chatId);
     } else if (data === "send_payload_ws") {
       await sendWsPayloadOnly(chatId);
