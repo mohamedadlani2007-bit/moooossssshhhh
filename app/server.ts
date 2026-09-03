@@ -355,7 +355,6 @@ function isAuthorizedAdmin(chatId: string | number): boolean {
 // SSH Credentials & Host Key
 // -----------------------------------------------------------------------------
 let sshServerInstance: any = null;
-const sshCredsFilePath = path.join(DATA_DIR, "ssh-credentials.json");
 
 interface SshCredentials {
   username: string;
@@ -364,35 +363,23 @@ interface SshCredentials {
 
 const activeSshConnections = new Set<{ client: any; user: string; pingTimer?: NodeJS.Timeout; connectedAt: number }>();
 
+let inMemorySshCredentials: SshCredentials | null = null;
 function getSshCredentials(): SshCredentials {
-  if (fs.existsSync(sshCredsFilePath)) {
-    try {
-      const data = JSON.parse(fs.readFileSync(sshCredsFilePath, "utf8"));
-      if (data && data.username && data.password) return data;
-    } catch {}
-  }
+  if (inMemorySshCredentials) return inMemorySshCredentials;
   return {
     username: process.env.SSH_USERNAME || "mohaalamia",
     password: process.env.SSH_PASSWORD || "mooh2026"
   };
 }
-
 function saveSshCredentials(creds: SshCredentials) {
-  try {
-    fs.writeFileSync(sshCredsFilePath, JSON.stringify(creds, null, 2), "utf8");
-    addLog(`[SSH] Saved new credentials for user '${creds.username}'.`);
-
-    for (const conn of Array.from(activeSshConnections)) {
-      try { conn.client.end(); } catch {}
-      try { conn.client.destroy(); } catch {}
-    }
-    activeSshConnections.clear();
-  } catch (e: any) {
-    addLog(`[SSH] Error saving credentials: ${e?.message || e}`);
+  inMemorySshCredentials = { username: creds.username, password: creds.password };
+  addLog(`[SSH] Updated in-memory credentials for user '${creds.username}'.`);
+  for (const conn of Array.from(activeSshConnections)) {
+    try { conn.client.end(); } catch {}
+    try { conn.client.destroy(); } catch {}
   }
+  activeSshConnections.clear();
 }
-
-
 function generateRandomSshCredentials(): SshCredentials {
   const suffix = crypto.randomBytes(4).toString("hex");
   const password = crypto.randomBytes(9).toString("base64url").slice(0, 12);

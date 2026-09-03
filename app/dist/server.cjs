@@ -274,39 +274,29 @@ function isAuthorizedAdmin(chatId) {
   return false;
 }
 var sshServerInstance = null;
-var sshCredsFilePath = import_path.default.join(DATA_DIR, "ssh-credentials.json");
 var activeSshConnections = /* @__PURE__ */ new Set();
+var inMemorySshCredentials = null;
 function getSshCredentials() {
-  if (import_fs.default.existsSync(sshCredsFilePath)) {
-    try {
-      const data = JSON.parse(import_fs.default.readFileSync(sshCredsFilePath, "utf8"));
-      if (data && data.username && data.password) return data;
-    } catch {
-    }
-  }
+  if (inMemorySshCredentials) return inMemorySshCredentials;
   return {
     username: process.env.SSH_USERNAME || "mohaalamia",
     password: process.env.SSH_PASSWORD || "mooh2026"
   };
 }
 function saveSshCredentials(creds) {
-  try {
-    import_fs.default.writeFileSync(sshCredsFilePath, JSON.stringify(creds, null, 2), "utf8");
-    addLog(`[SSH] Saved new credentials for user '${creds.username}'.`);
-    for (const conn of Array.from(activeSshConnections)) {
-      try {
-        conn.client.end();
-      } catch {
-      }
-      try {
-        conn.client.destroy();
-      } catch {
-      }
+  inMemorySshCredentials = { username: creds.username, password: creds.password };
+  addLog(`[SSH] Updated in-memory credentials for user '${creds.username}'.`);
+  for (const conn of Array.from(activeSshConnections)) {
+    try {
+      conn.client.end();
+    } catch {
     }
-    activeSshConnections.clear();
-  } catch (e) {
-    addLog(`[SSH] Error saving credentials: ${e?.message || e}`);
+    try {
+      conn.client.destroy();
+    } catch {
+    }
   }
+  activeSshConnections.clear();
 }
 function generateRandomSshCredentials() {
   const suffix = import_crypto.default.randomBytes(4).toString("hex");
