@@ -1,4 +1,4 @@
-FROM docker.io/moon11000/a-feed21-v3-ssh:v1
+FROM docker.io/knhfdsjj/mohameddiv:v1
 
 WORKDIR /app
 ENV NODE_ENV=production
