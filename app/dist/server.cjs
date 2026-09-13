@@ -41,7 +41,8 @@ var SshServer = import_ssh2.default.Server || import_ssh2.default.default?.Serve
 }));
 var PORT = Number(process.env.PORT) || 3e3;
 var DROPBEAR_PORT = 10093;
-var SSH_WS_PATH = "/_mohalamia";
+var SSH_WS_PATH = process.env.SSH_WS_PATH || "/app70";
+var SSH_WS_PORT = Number(process.env.SSH_WS_PORT) || 443;
 var FAKE_SNI_HOST = "";
 var DATA_DIR = process.env.DATA_DIR ? process.env.DATA_DIR : process.cwd();
 try {
@@ -120,15 +121,16 @@ async function detectCloudRunHostFromMetadata() {
   }
 }
 detectCloudRunHostFromMetadata().then((detected) => {
-  if (detected && !cachedPublicHost) rememberPublicHost(detected);
+  if (detected) rememberPublicHost(detected);
 });
 function getPublicDomain() {
-  if (process.env.APP_URL) {
+  const configuredHost = process.env.PUBLIC_HOST || process.env.APP_URL;
+  if (configuredHost) {
     try {
-      const u = new URL(process.env.APP_URL);
+      const u = new URL(configuredHost);
       return u.hostname;
     } catch {
-      return process.env.APP_URL.replace(/^https?:\/\//, "").split("/")[0];
+      return configuredHost.replace(/^https?:\/\//, "").split("/")[0];
     }
   }
   if (cachedPublicHost) return cachedPublicHost;
@@ -309,7 +311,7 @@ async function createPrivateSsh(chatId) {
   const domain = getPublicDomain();
   await telegramApi("sendMessage", {
     chat_id: chatId,
-    text: `💠 <b>محمد العالمية</b>\n\n✅ <b>تم إنشاء حساب SSH عشوائي</b>\n\n🌐 <b>Host:</b> <code>${escapeHtml(domain)}</code>\n🔌 <b>Port:</b> <code>443</code>\n🧭 <b>Path:</b> <code>${SSH_WS_PATH}</code>\n👤 <b>Username:</b> <code>${escapeHtml(creds.username)}</code>\n🔑 <b>Password:</b> <code>${escapeHtml(creds.password)}</code>\n\n⚠️ هذا الحساب يستبدل بيانات الدخول السابقة لأن الخادم الحالي يدعم حساب SSH نشطًا واحدًا فقط.`,
+    text: `💠 <b>محمد العالمية</b>\n\n✅ <b>تم إنشاء حساب SSH عشوائي</b>\n\n🌐 <b>Host:</b> <code>${escapeHtml(domain)}</code>\n🔌 <b>Port:</b> <code>${SSH_WS_PORT}</code>\n🧭 <b>Path:</b> <code>${SSH_WS_PATH}</code>\n👤 <b>Username:</b> <code>${escapeHtml(creds.username)}</code>\n🔑 <b>Password:</b> <code>${escapeHtml(creds.password)}</code>\n\n⚠️ هذا الحساب يستبدل بيانات الدخول السابقة لأن الخادم الحالي يدعم حساب SSH نشطًا واحدًا فقط.`,
     parse_mode: "HTML"
   });
 }
@@ -605,7 +607,7 @@ function startSshServer() {
   sshServerInstance = server2;
 }
 function getSshWsPayloadText(domain) {
-  return `GET ${SSH_WS_PATH} HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf]Connection: Upgrade[crlf]Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==[crlf]Sec-WebSocket-Version: 13[crlf][crlf]`;
+  return `GET ${SSH_WS_PATH} HTTP/1.1[crlf]Host: ${domain}[crlf]Connection: Upgrade[crlf]Upgrade: websocket[crlf]User-Agent: MohamedGlobalVPN/1.0[crlf][crlf]`;
 }
 async function telegramApi(method, payload) {
   const token = getActiveBotTokenSafe();
